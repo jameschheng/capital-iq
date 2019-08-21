@@ -19,7 +19,7 @@ module CapitalIQ
 
       # send request
       response_data = from_cache(request_body) || self.class.post(
-          ENDPOINT, body: request_body, basic_auth: @auth, ssl_version: :TLSv1
+          ENDPOINT, body: request_body, basic_auth: @auth, ssl_version: :TLSv2
       ).parsed_response
 
       # analyze response
