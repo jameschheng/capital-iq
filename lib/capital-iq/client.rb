@@ -1,13 +1,13 @@
 module CapitalIQ
   class Client
-    attr_reader :cache
+    attr_reader :cache, :endpoint
 
-    ENDPOINT = 'https://sdk.gds.standardandpoors.com/gdssdk/rest/v3/clientservice.json'
     include HTTParty
     format :json
 
-    def initialize(username, password, cache_store=nil, cache_prefix="CAPIQ_")
+    def initialize(endpoint, username, password, cache_store=nil, cache_prefix="CAPIQ_")
       @auth = {username: username, password: password}
+      @endpoint = endpoint
       @cache = Cache.new(cache_store, cache_prefix)
     end
 
@@ -19,7 +19,7 @@ module CapitalIQ
 
       # send request
       response_data = from_cache(request_body) || self.class.post(
-          ENDPOINT, body: request_body, basic_auth: @auth, ssl_version: :TLSv1_2
+          @endpoint, body: request_body, basic_auth: @auth, ssl_version: :TLSv1_2
       ).parsed_response
 
       # analyze response
