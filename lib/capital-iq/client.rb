@@ -11,7 +11,7 @@ module CapitalIQ
       @cache = Cache.new(cache_store, cache_prefix)
     end
 
-    def base_request(requests)
+    def base_request(requests, headers = {})
       # build request
       requests = [requests] unless requests.class == Array
       request_array = requests.collect { |r| r.to_hash }
@@ -19,7 +19,7 @@ module CapitalIQ
 
       # send request
       response_data = from_cache(request_body) || self.class.post(
-          @endpoint, body: request_body, basic_auth: @auth, ssl_version: :TLSv1_2
+          @endpoint, body: request_body, basic_auth: @auth, ssl_version: :TLSv1_2, headers: headers
       ).parsed_response
 
       # analyze response
