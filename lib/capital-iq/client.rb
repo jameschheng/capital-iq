@@ -12,6 +12,9 @@ module CapitalIQ
     end
 
     def base_request(requests, headers = {})
+      # default to json since thats the endpoint
+      headers["Content-Type"] ||= "application/json"
+      
       # build request
       requests = [requests] unless requests.class == Array
       request_array = requests.collect { |r| r.to_hash }
